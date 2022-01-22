@@ -26,6 +26,7 @@ const MARK = {
   DECK_MY_DECK_HOST_MY_ORG: 0,
   FILE_LINK_DECK_MY_DECK_HOST_MY_ORG: 0,
   FILE_EXAMPLE_DECK_MY_DECK_HOST_MY_ORG: 1,
+  FILE_EXAMPLE_2_DECK_MY_DECK_HOST_MY_ORG: 2
 }
 
 const MESH_BASE = [
@@ -97,7 +98,8 @@ const MESH_BASE = [
 const MESH = [
   ...MESH_BASE,
   {
-    text: 'myorg host',
+    // 'myorg host',
+    text: 'myorg',
     host: m('HOST_MY_ORG'),
     deck: m('DECK_MY_DECK_HOST_MY_ORG'),
     file: m('FILE_LINK_DECK_MY_DECK_HOST_MY_ORG'),
@@ -105,7 +107,8 @@ const MESH = [
     mark: m('HOST_MY_ORG'),
   },
   {
-    text: 'myorg mydeck deck',
+    // 'myorg mydeck deck',
+    text: 'mydeck',
     host: m('HOST_MY_ORG'),
     deck: m('DECK_MY_DECK_HOST_MY_ORG'),
     file: m('FILE_LINK_DECK_MY_DECK_HOST_MY_ORG'),
@@ -113,7 +116,8 @@ const MESH = [
     mark: m('DECK_MY_DECK_HOST_MY_ORG'),
   },
   {
-    text: 'myorg mydeck link file',
+    // 'myorg mydeck link file',
+    text: 'link',
     host: m('HOST_MY_ORG'),
     deck: m('DECK_MY_DECK_HOST_MY_ORG'),
     file: m('FILE_LINK_DECK_MY_DECK_HOST_MY_ORG'),
@@ -121,12 +125,22 @@ const MESH = [
     mark: m('FILE_LINK_DECK_MY_DECK_HOST_MY_ORG'),
   },
   {
-    text: 'myorg mydeck example file',
+    // 'myorg mydeck example file',
+    text: 'example-file',
     host: m('HOST_MY_ORG'),
     deck: m('DECK_MY_DECK_HOST_MY_ORG'),
-    file: m('FILE_EXAMPLE_DECK_MY_DECK_HOST_MY_ORG'),
+    file: m('FILE_LINK_DECK_MY_DECK_HOST_MY_ORG'),
     form: m('FORM_FILE'),
     mark: m('FILE_EXAMPLE_DECK_MY_DECK_HOST_MY_ORG'),
+  },
+  {
+    // 'myorg mydeck example file 2',
+    text: 'example-file-2',
+    host: m('HOST_MY_ORG'),
+    deck: m('DECK_MY_DECK_HOST_MY_ORG'),
+    file: m('FILE_LINK_DECK_MY_DECK_HOST_MY_ORG'),
+    form: m('FORM_FILE'),
+    mark: m('FILE_EXAMPLE_2_DECK_MY_DECK_HOST_MY_ORG'),
   }
 ]
 
@@ -144,15 +158,15 @@ base.cast('@myorg/mydeck/example-file', file => {
   })
 })
 
-// base.cast('@myorg/mydeck/example-file-2', file => {
-//   file.task('my-task', text => {
-//     console.log(`message: ${text}`)
-//   })
-// })
+base.cast('@myorg/mydeck/example-file-2', file => {
+  file.task('my-task', text => {
+    console.log(`message: ${text}`)
+  })
+})
 
 base.bind('@myorg/mydeck/example-file').call('my-task', 'foo')
 
-// console.log(base.bind('@myorg/mydeck/example-file-2').line())
+console.log(base.read(...base.bind('@myorg/mydeck/example-file-2').line()).text)
 
 function m(name) {
   if (!MARK.hasOwnProperty(name)) {
