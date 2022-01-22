@@ -10,7 +10,7 @@ const FORM = {
   form: 3,
 }
 
-const MARK = {
+const MARK_BASE = {
   FORM_HOST: FORM.host,
   FORM_DECK: FORM.deck,
   FORM_FILE: FORM.file,
@@ -20,7 +20,15 @@ const MARK = {
   FILE_LINK_DECK_BASE_HOST_BASE: 0, // @drumwork/base/link
 }
 
-const MESH = [
+const MARK = {
+  ...MARK_BASE,
+  HOST_MY_ORG: 1,
+  DECK_MY_DECK_HOST_MY_ORG: 0,
+  FILE_LINK_DECK_MY_DECK_HOST_MY_ORG: 0,
+  FILE_EXAMPLE_DECK_MY_DECK_HOST_MY_ORG: 1,
+}
+
+const MESH_BASE = [
   {
     // @drumwork host
     text: 'drumwork',
@@ -86,6 +94,42 @@ const MESH = [
   },
 ]
 
+const MESH = [
+  ...MESH_BASE,
+  {
+    text: 'myorg host',
+    host: m('HOST_MY_ORG'),
+    deck: m('DECK_MY_DECK_HOST_MY_ORG'),
+    file: m('FILE_LINK_DECK_MY_DECK_HOST_MY_ORG'),
+    form: m('FORM_HOST'),
+    mark: m('HOST_MY_ORG'),
+  },
+  {
+    text: 'myorg mydeck deck',
+    host: m('HOST_MY_ORG'),
+    deck: m('DECK_MY_DECK_HOST_MY_ORG'),
+    file: m('FILE_LINK_DECK_MY_DECK_HOST_MY_ORG'),
+    form: m('FORM_DECK'),
+    mark: m('DECK_MY_DECK_HOST_MY_ORG'),
+  },
+  {
+    text: 'myorg mydeck link file',
+    host: m('HOST_MY_ORG'),
+    deck: m('DECK_MY_DECK_HOST_MY_ORG'),
+    file: m('FILE_LINK_DECK_MY_DECK_HOST_MY_ORG'),
+    form: m('FORM_FILE'),
+    mark: m('FILE_LINK_DECK_MY_DECK_HOST_MY_ORG'),
+  },
+  {
+    text: 'myorg mydeck example file',
+    host: m('HOST_MY_ORG'),
+    deck: m('DECK_MY_DECK_HOST_MY_ORG'),
+    file: m('FILE_EXAMPLE_DECK_MY_DECK_HOST_MY_ORG'),
+    form: m('FORM_FILE'),
+    mark: m('FILE_EXAMPLE_DECK_MY_DECK_HOST_MY_ORG'),
+  }
+]
+
 base.fuse({
   host: m('HOST_BASE'),
   deck: m('DECK_BASE_HOST_BASE'),
@@ -100,15 +144,15 @@ base.cast('@myorg/mydeck/example-file', file => {
   })
 })
 
-base.cast('@myorg/mydeck/example-file-2', file => {
-  file.task('my-task', text => {
-    console.log(`message: ${text}`)
-  })
-})
+// base.cast('@myorg/mydeck/example-file-2', file => {
+//   file.task('my-task', text => {
+//     console.log(`message: ${text}`)
+//   })
+// })
 
 base.bind('@myorg/mydeck/example-file').call('my-task', 'foo')
 
-console.log(base.bind('@myorg/mydeck/example-file-2').line())
+// console.log(base.bind('@myorg/mydeck/example-file-2').line())
 
 function m(name) {
   if (!MARK.hasOwnProperty(name)) {
