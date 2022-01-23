@@ -223,3 +223,17 @@ function m(name) {
   return MARK[name]
 }
 ```
+
+## Implementation Details
+
+Every object/record is a "mesh". It is uniquely identified by 5 _marks_:
+
+1. host: The ID of the organization which controls the entity.
+2. deck: The ID of the organization project/repo which controls the entity.
+3. file: The ID of the file in the repo which controls the entity (a "group" basically).
+4. form: The ID of the type of record. Type IDs are defined globally.
+5. mesh: The ID of the mesh itself, relative to these other 4 IDs.
+
+So essentially we just have a system where you can create/select/remove records by this 5-tuple. That's it.
+
+You would then build a layer on top of this to be one aspect of a distributed query, and build the appropriate indexing structures and such. Those can all be implemented as "modules" within this library. We are working on writing modules in Link Text and then compiling them down to this Base code. That will be the base compiler for link text.
